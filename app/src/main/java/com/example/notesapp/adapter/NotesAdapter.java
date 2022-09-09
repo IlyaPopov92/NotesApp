@@ -25,7 +25,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     public List<Note> getNotes() {
-        return notes;
+        return new ArrayList<>(notes);
     }
 
 
@@ -42,10 +42,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     //  создаем интерфейс слушателя событий
     public interface OnNoteClickListener {
-        void onNoteClick(int position);
+        void onNoteClick(Note note);
 
         //увеличиваем время нажатия по клику что бы удалялось не сразу
-        void onLongClick(int position);
+        void onLongClick(Note note);
     }
 
     // метод который создает макет
@@ -86,7 +86,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             @Override
             public void onClick(View view) {
                 if (onNoteClickListener != null) {
-                    onNoteClickListener.onNoteClick(note.getId());
+                    onNoteClickListener.onNoteClick(note);
                 }
             }
         });
@@ -95,9 +95,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             @Override
             public boolean onLongClick(View view) {
                 if (onNoteClickListener != null) {
-                    onNoteClickListener.onLongClick(note.getId());
+                    onNoteClickListener.onLongClick(note);
                 }
-
                 return true;
             }
         });
@@ -124,5 +123,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             textViewDayOfWeek = itemView.findViewById(R.id.textViewDayOfWeek);
         }
     }
+
 }
 

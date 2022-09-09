@@ -1,5 +1,6 @@
 package com.example.notesapp.pojo;
 
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

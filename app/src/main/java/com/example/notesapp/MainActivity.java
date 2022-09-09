@@ -35,35 +35,45 @@ public class MainActivity extends AppCompatActivity {
         //инициализируем объект MainViewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         recyclerViewNotes = findViewById(R.id.RecycleViewNotes);
+        getData();
 
         adapter = new NotesAdapter(notes);
-        getData();
-        recyclerViewNotes.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerViewNotes.setAdapter(adapter);
         adapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
             @Override
-            public void onNoteClick(int position) {
+            public void onNoteClick(Note note) {
                 Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
+
             @Override
-            public void onLongClick(int position) {
-                remove(position);
+            public void onLongClick(Note note) {
+                remove(note.getId());
                 Toast.makeText(MainActivity.this, "Вы удалили заметку", Toast.LENGTH_SHORT).show();
             }
         });
-        // что бы пользоваться свайпом, анонимный класс Simple, переопределяем два метода, в параметре 0 и в какую сторону свайпать
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+        // что бы пользоваться свайпом, анонимный класс SimpleCallback, переопределяем два метода, в параметре 0 и в какую сторону свайпать
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
+        ) {
+            //onMove вызывается когда хотим переместить один элемент на место другого
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target
+            ) {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder,
+                                 int direction
+            ) {
                 // direction - передает номер напрвления движения
                 remove(viewHolder.getAdapterPosition());
-                Toast.makeText(MainActivity.this, "Вы удалили заметку", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Вы удалили заметку",
+                        Toast.LENGTH_SHORT).show();
             }
         });
         // передаем recycle в свайп с помощью данного метода.
@@ -72,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void remove(int position) {
-
         //получаем экземпляр записки из адаптера
         Note note = adapter.getNotes().get(position);
         viewModel.deleteNote(note);
@@ -83,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void getData(){
+    private void getData() {
         //notesFromDB - является просматриваемым observible если произойдут изменнеия база данных об этом сообщит
         LiveData<List<Note>> notesFromDB = viewModel.getNotes();
         //если произойдут изменнеия база данных об этом сообщит - два параметра владелец - owner, анонимный класс Observer

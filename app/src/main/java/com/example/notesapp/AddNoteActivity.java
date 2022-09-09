@@ -21,8 +21,6 @@ public class AddNoteActivity extends AppCompatActivity {
     private EditText editTextDescription;
     private Spinner spinnerDayOfWeek;
     private RadioGroup radioGroupPriority;
-
-
     private MainViewModel viewModel;
 
     @Override
