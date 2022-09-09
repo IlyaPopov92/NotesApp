@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notesapp.adapter.NotesAdapter;
+import com.example.notesapp.pojo.Note;
+
 import java.util.ArrayList;
 import java.util.List;
 

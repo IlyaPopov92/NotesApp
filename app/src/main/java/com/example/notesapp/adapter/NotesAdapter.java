@@ -1,15 +1,16 @@
-package com.example.notesapp;
+package com.example.notesapp.adapter;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.example.notesapp.pojo.Note;
+import com.example.notesapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 
     //  создаем интерфейс слушателя событий
-    interface OnNoteClickListener {
+    public interface OnNoteClickListener {
         void onNoteClick(int position);
         //увеличиваем время нажатия по клику что бы удалялось не сразу
         void onLongClick(int position);
@@ -39,7 +40,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @NonNull
     @Override
     public NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.note_item, parent, false);
         return new NotesViewHolder(view);
     }
 
@@ -55,16 +57,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         int priorityId = note.getPriority();
         switch (priorityId) {
             case 1:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_red_light);
+                color = android.R.color.holo_red_light;
                 break;
             case 2:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_orange_light);
+                color = android.R.color.holo_orange_light;
                 break;
             default:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_green_light);
+                color = android.R.color.holo_green_light;
                 break;
         }
-        holder.textViewTitle.setBackgroundColor(color);
+        int color1 = ContextCompat.getColor(holder.itemView.getContext(),color);
+        holder.textViewTitle.setBackgroundColor(color1);
 
     }
 

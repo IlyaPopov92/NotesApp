@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.notesapp.data.NotesDataBase;
+import com.example.notesapp.pojo.Note;
+
 import java.util.List;
 
 
