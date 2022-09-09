@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNotes;
     private final ArrayList<Note> notes = new ArrayList<>();
     private NotesAdapter adapter;
-     /*private NotesDBHelper dbHelper;
-    private SQLiteDatabase database;*/
     private MainViewModel viewModel;
 
     @Override
@@ -37,14 +35,7 @@ public class MainActivity extends AppCompatActivity {
         //инициализируем объект MainViewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         recyclerViewNotes = findViewById(R.id.RecycleViewNotes);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-       /* dbHelper = new NotesDBHelper(this);
-        // получаем базу данных для записи данных
-        database = dbHelper.getWritableDatabase();
-        getData();*/
+
         adapter = new NotesAdapter(notes);
         getData();
         recyclerViewNotes.setLayoutManager(new LinearLayoutManager(this));

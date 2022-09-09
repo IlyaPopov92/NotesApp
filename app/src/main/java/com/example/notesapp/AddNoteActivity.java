@@ -34,10 +34,6 @@ public class AddNoteActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.editTextDescription);
         spinnerDayOfWeek = findViewById(R.id.spinnerDayOfWeek);
         radioGroupPriority = findViewById(R.id.radioGroupPriority);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.hide();
-        }
 
     }
 
