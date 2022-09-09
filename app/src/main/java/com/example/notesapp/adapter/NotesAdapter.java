@@ -80,6 +80,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         }
         int color1 = ContextCompat.getColor(holder.itemView.getContext(), color);
         holder.textViewTitle.setBackgroundColor(color1);
+
         //Вызываем слушателя и переопределяем метод и по адаптеру устанавливаем позицию для слушателя
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +119,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewDayOfWeek = itemView.findViewById(R.id.textViewDayOfWeek);
