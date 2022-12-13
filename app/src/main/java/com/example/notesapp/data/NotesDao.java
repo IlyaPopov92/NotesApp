@@ -1,4 +1,4 @@
-package com.example.notesapp;
+package com.example.notesapp.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,7 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.ArrayList;
+import com.example.notesapp.pojo.Note;
+
 import java.util.List;
 
 //Dao - Data access object (объект доступа к данным)

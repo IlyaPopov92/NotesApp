@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notesapp.adapter.NotesAdapter;
+import com.example.notesapp.pojo.Note;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
             public void onNoteClick(int position) {
                 Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onLongClick(int position) {
                 remove(position);
@@ -79,12 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void remove(int position) {
-       /* int id = notes.get(position).getId();
-        // удаление данных из базы данных, параметры (имя табоицы, where - откуда удаляем "указываем параметры удаления, знак вопроса показывает что удаляем",whereArgs -  что именно удаляем)
-        String where = NotesContract.NotesEntry._ID + " = ? ";
-        String[] whereArgs = new String[]{Integer.toString(id)};
-        database.delete(NotesContract.NotesEntry.TABLE_NAME, where, whereArgs);
-        getData();*/
+
         //получаем экземпляр записки из адаптера
         Note note = adapter.getNotes().get(position);
         viewModel.deleteNote(note);
@@ -106,25 +103,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    /*private void getData() {
-        notes.clear();
-        //вытаскиваем данные из базы данных используем объект  Cursor - хранятся все данные из базы данных указывает на конкретные строки
-        //orderBy-этим атрибутом можем отсортировать таблицу в БД по колонке
-        //selection и selectionArgs, работают так же как и  where, whereArgs
-        String selection = NotesContract.NotesEntry.COLUMN_PRIORITY + " < ? ";
-        String[] selectionArgs = new String[]{"2"};
-        Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME, null, selection, selectionArgs, null, null, NotesContract.NotesEntry.COLUMN_PRIORITY);
-       получаем конкретную строку moveToNext() - возвращает значением boolean, если есть какие то записи приведет к строке с индексом 0
-        и с помощью цикла while прочитаем все строки
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry._ID));
-            String title = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_TITLE));
-            String description = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DESCRIPTION));
-            String dayOfWeek = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK));
-            int priority = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_PRIORITY));
-            Note note = new Note(id, title, description, dayOfWeek, priority);
-            notes.add(note);
-        }
-        cursor.close();
-    }*/
+
 }

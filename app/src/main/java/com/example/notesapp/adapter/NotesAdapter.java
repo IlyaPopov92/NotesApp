@@ -1,15 +1,16 @@
-package com.example.notesapp;
+package com.example.notesapp.adapter;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.example.notesapp.pojo.Note;
+import com.example.notesapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,17 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     public List<Note> notes;
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+        notifyDataSetChanged();
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+
     private OnNoteClickListener onNoteClickListener;
 
     public void setOnNoteClickListener(OnNoteClickListener onNoteClickListener) {
@@ -29,8 +41,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 
     //  создаем интерфейс слушателя событий
-    interface OnNoteClickListener {
+    public interface OnNoteClickListener {
         void onNoteClick(int position);
+
         //увеличиваем время нажатия по клику что бы удалялось не сразу
         void onLongClick(int position);
     }
@@ -39,7 +52,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @NonNull
     @Override
     public NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.note_item, parent, false);
         return new NotesViewHolder(view);
     }
 
@@ -55,17 +69,38 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         int priorityId = note.getPriority();
         switch (priorityId) {
             case 1:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_red_light);
+                color = android.R.color.holo_red_light;
                 break;
             case 2:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_orange_light);
+                color = android.R.color.holo_orange_light;
                 break;
             default:
-                color = holder.itemView.getResources().getColor(android.R.color.holo_green_light);
+                color = android.R.color.holo_green_light;
                 break;
         }
-        holder.textViewTitle.setBackgroundColor(color);
+        int color1 = ContextCompat.getColor(holder.itemView.getContext(), color);
+        holder.textViewTitle.setBackgroundColor(color1);
 
+        //Вызываем слушателя и переопределяем метод и по адаптеру устанавливаем позицию для слушателя
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onNoteClickListener != null) {
+                    onNoteClickListener.onNoteClick(note.getId());
+                }
+            }
+        });
+        // добавляем слушателя для долгого нажатия на кнопку
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (onNoteClickListener != null) {
+                    onNoteClickListener.onLongClick(note.getId());
+                }
+
+                return true;
+            }
+        });
     }
 
     // метод просто хранит размер
@@ -84,41 +119,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewDayOfWeek = itemView.findViewById(R.id.textViewDayOfWeek);
-
-            //Вызываем слушателя и переопределяем метод и по адаптеру устанавливаем позицию для слушателя
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onNoteClickListener != null) {
-                        onNoteClickListener.onNoteClick(getAdapterPosition());
-                    }
-                }
-            });
-            // добавляем слушателя для долгого нажатия на кнопку
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (onNoteClickListener != null){
-                        onNoteClickListener.onLongClick(getAdapterPosition());
-                    }
-
-                    return true;
-                }
-            });
-
         }
     }
-
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
-        notifyDataSetChanged();
-    }
-
-    public List<Note> getNotes() {
-        return notes;
-    }
 }
+
